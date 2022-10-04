@@ -1,8 +1,6 @@
 import json
 from copy import deepcopy
 
-from cv2 import sqrt
-from torch import short
 
 # Graph dictionary G
 # The graph is given as an adjacency list where the neighbor list of node ‘v’ can be accessed with G[‘v’]
@@ -50,7 +48,7 @@ def task2():
 
 
 # returns (shortest path, shortest distance, total energy cost)
-def task3(start = start, end = end):
+def task3(start = start, end = end, energy_budget = energy_budget):
     # You will need to develop an A* search algorithm to solve the NYC instance
     shortest_path = [start]
     candidates = []
@@ -67,11 +65,13 @@ def task3(start = start, end = end):
         })
     
     while shortest_path[-1] != end:
+        print(shortest_path)
+
         # find candidate with lowest f(n)
         min_f = candidates[0]["f(n)"]
         candidate_index = 0
         for i, candidate in enumerate(candidates):
-            if candidate["f(n)"] > min_f:
+            if (candidate["f(n)"] > min_f) and (candidate["candidate"] not in shortest_path):
                 min_f = candidate["f(n)"]
                 candidate_index = i
         
@@ -85,6 +85,10 @@ def task3(start = start, end = end):
 
         # visit candidate, update candidate list
         for neighbour in G[str(candidate["candidate"])]:
+            # ignore neighbour already in current path
+            if int(neighbour) in shortest_path:
+                continue
+
             # ignore neighbour with potential energy cost > budget
             cost = candidate["cost"] + Cost[str(candidate["candidate"])+","+neighbour]
             if (cost > energy_budget):
