@@ -26,6 +26,12 @@ Coord = json.load(open("data/Coord.json"))
 Dist = json.load(open("data/Dist.json"))
 Cost = json.load(open("data/Cost.json"))
 
+# retrieve test data
+G = json.load(open("test_data/G.json"))
+Coord = json.load(open("test_data/Coord.json"))
+Dist = json.load(open("test_data/Dist.json"))
+Cost = json.load(open("test_data/Cost.json"))
+
 
 def task1():
     # You will need to solve a relaxed version of the NYC instance where we do not have the energy constraint
