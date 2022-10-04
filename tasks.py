@@ -1,6 +1,9 @@
 import json
 from copy import deepcopy
 
+from cv2 import sqrt
+from torch import short
+
 # Graph dictionary G
 # The graph is given as an adjacency list where the neighbor list of node ‘v’ can be accessed with G[‘v’]
 
@@ -23,14 +26,15 @@ end = 50
 # retrieve data
 G = json.load(open("data/G.json"))
 Coord = json.load(open("data/Coord.json"))
-Dist = json.load(open("data/Dist.json"))
-Cost = json.load(open("data/Cost.json"))
-
+Dist = json.load(open("data/Dist.json")) # float
+Cost = json.load(open("data/Cost.json")) # int
+'''
 # retrieve test data
 G = json.load(open("test_data/G.json"))
 Coord = json.load(open("test_data/Coord.json"))
 Dist = json.load(open("test_data/Dist.json"))
 Cost = json.load(open("test_data/Cost.json"))
+'''
 
 
 def task1():
@@ -46,20 +50,20 @@ def task2():
 
 
 # returns (shortest path, shortest distance, total energy cost)
-def task3():
+def task3(start = start, end = end):
     # You will need to develop an A* search algorithm to solve the NYC instance
     shortest_path = [start]
-    shortest_distance = 0
-    total_energy_cost = 0
-
     candidates = []
+
     for neighbour in G[str(start)]:
+        h_n = ( ( ( Coord[str(start)][0] - Coord[neighbour][0] ) ** 2 ) + ( ( Coord[str(start)][1] - Coord[neighbour][1] ) ** 2 ) ) ** 0.5
         candidates.append({
             "prepath": [start],
             "candidate": int(neighbour),
-            "g(n)": Cost[str(start)+","+neighbour],
-            "h(n)": Dist[neighbour+","+str(end)],
-            "f(n)": Cost[str(start)+","+neighbour] + Dist[neighbour+","+str(end)]
+            "g(n)": Dist[str(start)+","+neighbour],
+            "h(n)": h_n,
+            "f(n)": Dist[str(start)+","+neighbour] + h_n,
+            "cost": Cost[str(start)+","+neighbour]
         })
     
     while shortest_path[-1] != end:
@@ -71,19 +75,32 @@ def task3():
                 min_f = candidate["f(n)"]
                 candidate_index = i
         
-        # visit candidate, update candidate list
         candidate = candidates[candidate_index]
+        shortest_path = deepcopy(candidate["prepath"])
+        shortest_path.append(candidate["candidate"])
+
+        # if candidate is the end node, return output
+        if shortest_path[-1] == end:
+            return (shortest_path, candidate["g(n)"], candidate["cost"])
+
+        # visit candidate, update candidate list
         for neighbour in G[str(candidate["candidate"])]:
+            # ignore neighbour with potential energy cost > budget
+            cost = candidate["cost"] + Cost[str(candidate["candidate"])+","+neighbour]
+            if (cost > energy_budget):
+                continue
+
             # add neighbour as new candidate
-            prepath = deepcopy(candidate["prepath"])
-            prepath.append(candidate["candidate"])
-            g_n = candidate["g(n)"] + Cost[str(candidate["candidate"])+","+neighbour]
+            g_n = candidate["g(n)"] + Dist[str(candidate["candidate"])+","+neighbour]
+            h_n = ( ( ( Coord[str(candidate["candidate"])][0] - Coord[neighbour][0] ) ** 2 ) + ( ( Coord[str(candidate["candidate"])][1] - Coord[neighbour][1] ) ** 2 ) ) ** 0.5
 
             candidates.append({
-                "prepath": prepath,
+                "prepath": shortest_path,
                 "candidate": int(neighbour),
                 "g(n)": g_n,
-                "h(n)": Dist[neighbour+","+str(end)],
-                "f(n)": g_n + Dist[neighbour+","+str(end)]
+                "h(n)": h_n,
+                "f(n)": g_n + h_n,
+                "cost": cost
             })
-    return
+        candidates.pop(candidate_index)
+    return None
