@@ -17,24 +17,27 @@ def main():
     with open('data/Coord.json', "r") as coord_file:
         coorddata = json.load(coord_file)
 
-    startnode = 1
-    endnode = 50
+    startnode = "1"
+    endnode = "50"
+    costbudget = 287932
     print("Running Task 1: relaxed NYC instance with no cost\nUsing Uniform Cost Search (UCS) algorithm\n")
-    print(f"Start node: {startnode}\n")
-    print(f"End node: {endnode}\n")
-    ucsnocost.ucsnocost(startnode, endnode, graphdata, distdata)
+    print(f"Start node: {startnode}")
+    print(f"End node: {endnode}")
+    ucsnocost.ucsnocost(startnode, endnode, graphdata, distdata, costdata)
     print("\n")
 
     print("Running Task 2: full NYC instance\nUsing uninformed search algorithm: Uniform Cost Search (UCS)\n")
-    print(f"Start node: {startnode}\n")
-    print(f"End node: {endnode}\n")
-    ucsfull.ucsfull(startnode, endnode, graphdata, distdata, costdata)
+    print(f"Start node: {startnode}")
+    print(f"End node: {endnode}")
+    print(f"Energy cost budget: {costbudget}\n")
+    ucsfull.ucsfull(startnode, endnode, graphdata, distdata, costdata, costbudget)
     print("\n")
 
     print("Running Task 3: full NYC instance\nUsing informed search algorithm: A Star Search\n")
-    print(f"Start node: {startnode}\n")
-    print(f"End node: {endnode}\n")
-    astar.astar(startnode, endnode, graphdata, distdata, costdata, coorddata)
+    print(f"Start node: {startnode}")
+    print(f"End node: {endnode}")
+    print(f"Energy cost budget: {costbudget}\n")
+    astar.astar(startnode, endnode, graphdata, distdata, costdata, coorddata, costbudget)
 
 
 if __name__ == "__main__":
