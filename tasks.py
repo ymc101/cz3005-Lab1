@@ -44,6 +44,7 @@ def task2():
     return
 
 
+
 # returns (shortest path, shortest distance, total energy cost)
 def task3():
     # You will need to develop an A* search algorithm to solve the NYC instance
