@@ -1,7 +1,6 @@
 import json
 import ucsnocost
 import ucsfull
-import astar
 
 def main():
     #initialization: opens all json files and return data as dictionary
@@ -37,7 +36,6 @@ def main():
     print(f"Start node: {startnode}")
     print(f"End node: {endnode}")
     print(f"Energy cost budget: {costbudget}\n")
-    astar.astar(startnode, endnode, graphdata, distdata, costdata, coorddata, costbudget)
 
 
 if __name__ == "__main__":
