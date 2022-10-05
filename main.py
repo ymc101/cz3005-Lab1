@@ -41,8 +41,8 @@ def main():
     print(f"End node: {endnode}")
     print("Heuristic function: Displacement from current node to goal node")
     print(f"Energy cost budget: {costbudget}\n")
-    astar.astar(startnode, endnode, graphdata, distdata, costdata, costbudget, coorddata)
-
+    time_for_astar =timeit.timeit(lambda: astar.astar(startnode, endnode, graphdata, distdata, costdata, costbudget, coorddata), number=1)
+    print(f"Time taken for A star: {time_for_astar}")
 
 if __name__ == "__main__":
     main()
