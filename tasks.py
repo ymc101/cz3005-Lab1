@@ -71,7 +71,7 @@ def task3(start = start, end = end, energy_budget = energy_budget):
         min_f = candidates[0]["f(n)"]
         candidate_index = 0
         for i, candidate in enumerate(candidates):
-            if (candidate["f(n)"] > min_f) and (candidate["candidate"] not in shortest_path):
+            if (candidate["f(n)"] < min_f) and (candidate["candidate"] not in shortest_path):
                 min_f = candidate["f(n)"]
                 candidate_index = i
         
