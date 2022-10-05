@@ -1,6 +1,7 @@
 import json
 import ucsnocost
 import ucsfull
+import astar
 
 def main():
     #initialization: opens all json files and return data as dictionary
@@ -35,7 +36,9 @@ def main():
     print("Running Task 3: full NYC instance\nUsing informed search algorithm: A Star Search\n")
     print(f"Start node: {startnode}")
     print(f"End node: {endnode}")
+    print("Heuristic function: Displacement from current node to goal node")
     print(f"Energy cost budget: {costbudget}\n")
+    astar.astar(startnode, endnode, graphdata, distdata, costdata, costbudget, coorddata)
 
 
 if __name__ == "__main__":
