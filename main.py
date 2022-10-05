@@ -2,6 +2,7 @@ import json
 import ucsnocost
 import ucsfull
 import astar
+import timeit
 
 def main():
     #initialization: opens all json files and return data as dictionary
@@ -23,7 +24,8 @@ def main():
     print("Running Task 1: relaxed NYC instance with no cost\nUsing Uniform Cost Search (UCS) algorithm\n")
     print(f"Start node: {startnode}")
     print(f"End node: {endnode}")
-    ucsnocost.ucsnocost(startnode, endnode, graphdata, distdata, costdata)
+    time_for_ucsnocost = timeit.timeit(lambda: ucsnocost.ucsnocost(startnode, endnode, graphdata, distdata, costdata), number= 1)
+    print(f"Time taken for UCS no cost: {time_for_ucsnocost}")
     print("\n")
 
     print("Running Task 2: full NYC instance\nUsing uninformed search algorithm: Uniform Cost Search (UCS)\n")
@@ -31,6 +33,7 @@ def main():
     print(f"End node: {endnode}")
     print(f"Energy cost budget: {costbudget}\n")
     ucsfull.ucsfull(startnode, endnode, graphdata, distdata, costdata, costbudget)
+    #print(f"Time taken for UCS full cost: {time_for_ucsfull}")
     print("\n")
 
     print("Running Task 3: full NYC instance\nUsing informed search algorithm: A Star Search\n")
